@@ -1,0 +1,37 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const crypto_1 = require("crypto");
+function oid(str, mongo = false) {
+    if (mongo) {
+        return (0, crypto_1.createHash)('md5')
+            .update(Buffer.from(str.toString()))
+            .digest('hex')
+            .substring(0, 32);
+    }
+    const res = [];
+    const s = [
+        ...(0, crypto_1.createHash)('md5')
+            .update(Buffer.from(str.toString()))
+            .digest('hex')
+            .substring(0, 32),
+    ];
+    let j = 1;
+    for (const i in s) {
+        if (j === 9) {
+            res.push(9);
+        }
+        else if (j === 13) {
+            res.push(4);
+        }
+        else {
+            res.push(s[i]);
+        }
+        if (j === 8 || j === 12 || j == 16 || j === 20) {
+            res.push('-');
+        }
+        j++;
+    }
+    return res.join('');
+}
+exports.default = oid;
+//# sourceMappingURL=index.js.map
